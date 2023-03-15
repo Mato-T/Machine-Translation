@@ -1,7 +1,20 @@
 # Project Description
 ## Introduction
-- The Transformer architecture introduced in the paper "Attention Is All You Need" one was major leap forwards in the development of more sophisticated Natural Language Models and it paved the way for popular models like GPT and BERT. As the time of this writing, major tech-companies like Microsoft, Google, OpenAI, Meta, etc. announce their own models that were only possible due to the development of Transformers.
+- The Transformer architecture introduced in the paper "Attention Is All You Need" was a major leap forwards in the development of more sophisticated Natural Language Models and it paved the way for popular models like GPT and BERT. As the time of this writing, major tech-companies like Microsoft, Google, OpenAI, Meta, etc. are announcing their own models that are based on the Transformer architecture.
 - For this reason, I decided to take a deeper look into the architecture behind this revolutionary model and assessed machine translation as a fitting project. The dataset consists of French sentences and their Enlgish translation (or vice versa) and can be found on Kaggle using this URL: https://www.kaggle.com/datasets/dhruvildave/en-fr-translation-dataset
 - Please note that the following information should be read along with the Python code in this repository and requires a more profound understanding of neural networks, including the Sequence-to-Sequence model and the Attention mechanism. Each concept described in this documentation is explained in more detail in the Concept.md file. For more information on the cross-entropy loss, check out the Concept.md file in the Fraud-Detection repository.
 ## Preprocessing
-- 
+- The dataset is very large and consists of about 22.5 million sentences. Due to my limited computational resources, I had to load in the dataset in chunks as I was running out of memory to store the data. I have to repeat the whole preprocessing and training process for each chunk of dataset split. The model will be saved and restored for each time in the loop.
+- But first, lets take a look at the distribution of length of each sentence in English and French:
+### include subplot of both
+- As seen in the histograms, most sentences have a length of below 500 characters. To speed up training, I decided to include sentences of below 200 characters only.
+- Next, a vocabulary must be created for both English and French sentences that map to a specific integer, since the Transformer model does not accept string values as input. To create a vocabulary, tokenize each sentence and count the occurence of each token. These occurrences can be used to set a threshold to exclude any tokens that do not fulfill the requirement. This keeps the vocabulary smaller and thus increases the training duration.
+- A dataset is then createn by turning each sentence into its integer representation using the respective vocabulary. Note that the input to the Transformer is a tupel consisting of both the French and English sentence. This is because the encoder requires French sentence to create a representation of the source sentence that will be used for the attention mechanism in the decoder. The decoder makes the actual prediction (more information later on).
+- Since I use batched samples, all sentences must be padded to fit the length of the longest sentence since the Transformer expects the input to be in a unified dimension. These are all the steps required to prepare the dataset for the model.
+
+## Building and Training
+- In contrast to RNNs, the entire sequence is processed at once using positional encoding. The encoder part of the transformer processes the source sentence (French) and produces a set of attention vectors, which are used by the decoder to focus on appropriate places in the input sequence during translation.
+- The decoder processes the target sentence (English), which is shiften one to the left by prepending an SOS (Start-of-Sentence) token to the target sequence. The decoder then predicts the next token based on the input. This all happens simultaneously by using a mask to "cover" future tokens that were not part of the processing yet.
+- Next is the training part, where I have used the ADAM optimizer along with the Cosine Annealing learning rate scheduler (more information can be found in the Concepts.md in the Image-Classification repository). Again, due to limited computational resourced, I have kept the embedding dimension and epochs small
+
+## Evaluation
