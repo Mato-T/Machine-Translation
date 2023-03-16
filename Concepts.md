@@ -79,12 +79,12 @@ $$\bar x=\sum_{i=1}^T\alpha_i*F(x_i)$$
     ![mha](https://user-images.githubusercontent.com/127037803/225584188-b714fc96-37d1-48d1-a607-9bed862ac4aa.png)
     
  # Positional Encoding
- - The embedding approaches are fast and potentially accurate but often overfit the data since they lack the sequential information
+ - The traditional embedding approaches are fast and potentially accurate but often overfit the data since they lack the sequential information
 - One solution might be when the embeddings themselves contain information about their relative order. This is called a positional encoding
 - The location of the word can be represented as vectors, which are added to the inputs so the input contain themselves and information about where each item is in the input
-- This encodes sequential information into the network’s inputs. The hidden layers still operate independently with weight sharing but now it can learn to extract the position information from the input
+- This encodes sequential information into the network’s inputs. The hidden layers still operate independently but now it can learn to extract the position information from the input
 - There is a sequence of embeddings $h_1, h_2,...h_T$ where $h_i\in\mathbb R^D$ represents the embedding after feeding in token $x_i$
-- A position vector $P(t)$ can be added to the embeddings to create an improved embedding $\tilde h_t$ that contains information about the original content $h_t$ and its location as the $t$th item in the input
+- A position vector $P(t)$ can be added to the embeddings to create an improved embedding $\tilde h_t$ that contains information about the original content $h_t$ and its location as the $t$ th item in the input
 
     $$\tilde h_t=h_t+P(t)$$
 
@@ -92,8 +92,8 @@ $$\bar x=\sum_{i=1}^T\alpha_i*F(x_i)$$
 - The sine function oscillates up and down. If $sin(t)=y$ is calculated, knowing $y$ tells something about what input $t$ might have been. For example, if $y=0$ and there multiple oscillations, there are many possible positions this input could be at
 - This situation can be improved by adding a second sine call, but with a frequency component $f$. So $sin(t/f)$ is computed, once with $f=1$ and once with $f=10$
 
-    ![architecture](https://user-images.githubusercontent.com/127037803/225585344-c89ed159-71af-4a67-9a23-5e8a3d840226.png)
- 
+    ![pos](https://user-images.githubusercontent.com/127037803/225593420-b17dd802-0035-48bd-840e-6c0099011251.png)
+
 - Now, with two values of $f$, it is possible to uniquely identify some positions. If $sin(t)=0$ and $sin(t/100)=0$, there are four possible positions the input could be at: $t=0, 31, 68, 94$, which are the only four positions where both cases are true
 - This shows that when adding frequencies $f$ to the calculation, the exact location within the input sequence can be inferred from the combination of values
 - A position encoding function $P(t)$ is defined that returns a D dimensional vector by creating sine and cosine values at different frequencies: $f_1, f_2,...f_{D/2}$ (D/2 is used because both sine and cosine values are used for the frequency)
@@ -104,8 +104,8 @@ $$\bar x=\sum_{i=1}^T\alpha_i*F(x_i)$$
 - This means that there are as many different frequency plots as there are position dimensions because each $i$ represents a different frequency. The more frequencies there are, the easier it becomes to identify unique positions in time
     
 # Transformer Architecture
-- The encoder starts by processing the input sequence. To address the order of the words (because they are not processed sequentially), the transformer adds a vector to each input embedding. These vectors follow a specific pattern that the model learns, which helps it determine the position of each word, or the distance between different words in the sequence
-- Next, the result of adding the positional encoding to the input embedding is then passed into the self attention-layer to create some context of the words relative to each other
+## Encoder
+- The encoder starts by processing the input sequence. To address the order of the words (because they are not processed sequentially), the transformer adds positional encoding. Next, the result of adding the positional encoding to the input embedding is then passed into the self-attention layer to create some context of the words relative to each other
 - The transformer network also makes use of residual connections. Each sub-layer in each encoder has a residual connection around it, and is followed by a layer-normalization step
 - The output of the top encoder is then transformed into a set of attention vectors K and V. These are to be used by each decoder in its encoder-decoder attention layer, which helps the decoder focus on appropriate places in the input sequence
 
