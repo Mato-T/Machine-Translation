@@ -106,11 +106,11 @@ $$\bar x=\sum_{i=1}^T\alpha_i*F(x_i)$$
 # Transformer Architecture
 ## Encoder
 - The encoder starts by processing the input sequence (French sentence). To address the order of the words (because they are not processed sequentially), the transformer adds positional encoding. Next, the result of adding the positional encoding to the input embedding is then passed into the self-attention layer to create some context of the words relative to each other
-- The transformer network also makes use of residual connections. Each sub-layer in each encoder has a residual connection around it, and is followed by a layer-normalization step
+- The transformer network also makes use of residual connections (For more information, check out the Concepts.md file in the Image-classification repository). Each sub-layer in each encoder has a residual connection around it, and is followed by a layer-normalization step
 - The output of the top encoder is then transformed into a set of attention vectors K and V. These are to be used by each decoder in its encoder-decoder attention layer, which helps the decoder focus on appropriate places in the input sequence
 
 ## Decoder
-- As done with the encoder inputs, positional encoding is added to those decoder inputs to indicate the position of each word. The inputs to the decoder are the translated sentences, shifted to the right by 1 to implement teachers forcing. The loss of the first token (due to shifting) is made up by placing an SOS token at the first position.
+- As done with the encoder inputs, positional encoding is added to those decoder inputs to indicate the position of each word. The inputs to the decoder are the translated sentences, shifted to the right by 1 to mimic teachers forcing. The loss of the first token (due to shifting) is made up by placing an SOS token at the first position.
 - In the decoder, the self-attention layer is only allowed to calculate the context from earlier positions in the translated sequence. This is done by masking future positions before the softmax step in the self-attention calculations
 - The encoder-decoder attention layer works like the multiheaded self-attention, except that it takes the Query matrix from the masked self-attention layer and the Key and Value matrix from the last output of the encoder rather than generating its own
 - The decoder uses residual connections as well, but due to its architecture, three residual connections are added. The decoder stack outputs a vector of floats, which are passed into the final linear layer, which is followed by a softmax layer
@@ -119,3 +119,11 @@ $$\bar x=\sum_{i=1}^T\alpha_i*F(x_i)$$
 
     ![architecture](https://user-images.githubusercontent.com/127037803/225584793-2ede5568-3a8a-4503-a225-f555e0916354.png)
 
+# Sources
+Again, huge thank you to Manning Publications and their book "Inside Deep Learning (Math, Algorithms, Models)". Very detailed and well explained.
+
+https://www.manning.com/books/inside-deep-learning
+
+For more information about implementing the Transformer in Python, check out this great video:
+
+https://www.youtube.com/watch?v=U0s0f995w14
