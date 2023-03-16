@@ -46,11 +46,15 @@ $$\bar x=\sum_{i=1}^T\alpha_i*F(x_i)$$
 ## Self-Attention
 - Regarding transformers, self-attention uses a slightly different approach. The first step in calculating self-attention is to create three vectors from each of the encoder’s input vectors. For each word, a query, a key, and a value vector is created. These vectors are created by multiplying the embedding by three weight matrices that are trained during the training process
     
-    $$q_n=x_n*W_q\\k_n=x_n*W_k\\v_n=x_n*W_v$$
+    $$q_n=x_n\*W_q$$
+    $$k_n=x_n\*W_k$$
+    $$v_n=x_n\*W_v$$
     
 - The second step in calculating self-attention is to calculate a score. The score is calculated by taking the dot product of the query vector of the currently processed word with the key vector of each respective word in the sentence. This will result in a context of relevance in relation to the currently processed word
     
-    $$s_1=q_1k_1\\s_2=q_1k_2\\s_n=q_1k_n$$
+    $$s_1=q_1k_1$$
+    $$s_2=q_1k_2$$
+    $$s_n=q_1k_n$$
     
 - The third and fourth steps are to divide the scores by the square root of the dimension of the key vector. This leads to having more stable gradients. These results are passed through a softmax operation, which normalizes the scores so they are all positive and add up to 1
     
@@ -94,7 +98,7 @@ $$\bar x=\sum_{i=1}^T\alpha_i*F(x_i)$$
 - This shows that when adding frequencies $f$ to the calculation, the exact location within the input sequence can be inferred from the combination of values
 - A position encoding function $P(t)$ is defined that returns a D dimensional vector by creating sine and cosine values at different frequencies: $f_1, f_2,...f_{D/2}$ (D/2 is used because both sine and cosine values are used for the frequency)
 
-    $$P(t)=\begin{pmatrix}\sin(\frac t{f_1})\\\cos(\frac t{f_1})\\\sin(\frac t{f_2})\\\cos(\frac t{f_2})\\\vdots\\\sin(\frac t{f_\frac D2})\\\cos(\frac t{f_\frac D2})\end{pmatrix}$$
+   ![pos_f](https://user-images.githubusercontent.com/127037803/225590502-8e6d2fbd-ba6c-4855-b2e4-5cec59f19b31.png)
 
 - In this case, the frequency $f_i$ is defined as $f_i=10000^{\frac {2i}D}$, where $D$ represents the total dimension of the positional embedding and $i$ represents the indexes of each of the positional dimensions
 - This means that there are as many different frequency plots as there are position dimensions because each $i$ represents a different frequency. The more frequencies there are, the easier it becomes to identify unique positions in time
