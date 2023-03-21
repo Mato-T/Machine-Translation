@@ -114,9 +114,9 @@ $$\bar x=\sum_{i=1}^T\alpha_i*F(x_i)$$
 - In the decoder, the self-attention layer is only allowed to calculate the context from earlier positions in the translated sequence. This is done by masking future positions before the softmax step in the self-attention calculations
 - The encoder-decoder attention layer works like the multiheaded self-attention, except that it takes the Query matrix from the masked self-attention layer and the Key and Value matrix from the last output of the encoder rather than generating its own
 - The decoder uses residual connections as well, but due to its architecture, three residual connections are added. The decoder stack outputs a vector of floats, which are passed into the final linear layer, which is followed by a softmax layer
-- Note however, that one component is required before the output of the decoder is passed into the linear layer. Since a sentiment label is required, average embedding over time is added to the model. This will average over the T dimension, resulting in the desired (B, D). To be more specific, the weighted average with attention mechanism is implemented to account for padding
 
     ![architecture](https://user-images.githubusercontent.com/127037803/225584793-2ede5568-3a8a-4503-a225-f555e0916354.png)
+- Note however, that one component is required before the output of the decoder is passed into the linear layer. Since a sentiment label is required, average embedding over time is added to the model. This will average over the T dimension, resulting in the desired (B, D). To be more specific, the weighted average with attention mechanism is implemented to account for padding
 
 # Sources
 Again, huge thank you to Manning Publications and their book "Inside Deep Learning (Math, Algorithms, Models)". Very detailed and well explained.
