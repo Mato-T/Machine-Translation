@@ -7,7 +7,7 @@
 - First, lets take a look at the distribution of length of each tweet:
 
   ![length](https://user-images.githubusercontent.com/127037803/227503757-7387def7-cf32-49ec-8dd8-ed964a9a945e.png)
-- As seen in this plot, most tweets remain under the threshold of 150 characters, so I will leave out any sample that exceeds 150 characters. There is no harm in that, since the excluded samples are very few in numbers.
+- As seen in this plot, most tweets remain under the threshold of 150 characters, however, I will leave out any sample that exceeds 100 characters. I deemed this the appropriate threshold, since it allowed me greater freedom when it came to experimenting with hyperparameters (I provide more information in the conclusion section). However, this also limits the capability to generalize well to longer sequences.
 - The dataset seems to label positive sentiment as 0 and negative sentiment as 4. A better representation of the target variable is to use 0 and 1 instead. I also dropped any rows that reported missing values.
 - Next, a vocabulary must be created to implement the embeddings of the tokens. Special tokens, such as for padding or start-of-sentence, are includes as weel. I also split the dataset randomly to create a training and test dataset.
 - Since I use batched samples, all sentences must be padded to fit the length of the longest sentence since the Transformer expects the input to be in a unified dimension. These are all the steps required to prepare the dataset for the model.
