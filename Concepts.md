@@ -94,7 +94,7 @@ $$\bar x=\sum_{i=1}^T\alpha_i*F(x_i)$$
 
     ![pos](https://user-images.githubusercontent.com/127037803/225593420-b17dd802-0035-48bd-840e-6c0099011251.png)
 
-- Now, with two values of $f$, it is possible to uniquely identify some positions. If $sin(t)=0$ and $sin(t/100)=0$, there are four possible positions the input could be at: $t=0, 31, 68, 94$, which are the only four positions where both cases are true
+- Now, with two values of $f$, it is possible to uniquely identify some positions. If $sin(t)=0$ and $sin(t/10)=0$, there are four possible positions the input could be at: $t=0, 31, 68, 94$, which are the only four positions where both cases are true
 - This shows that when adding frequencies $f$ to the calculation, the exact location within the input sequence can be inferred from the combination of values
 - A position encoding function $P(t)$ is defined that returns a D dimensional vector by creating sine and cosine values at different frequencies: $f_1, f_2,...f_{D/2}$ (D/2 is used because both sine and cosine values are used for the frequency)
 
